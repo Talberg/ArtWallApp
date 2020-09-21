@@ -1,23 +1,113 @@
 import { StatusBar } from 'expo-status-bar';
 import React , {useState} from 'react';
-import { StyleSheet, Text,Image, View } from 'react-native';
+import { StyleSheet, Text,Image, View ,ImageBackground} from 'react-native';
 
 
 
 export default function Header(props) {
 
-    // pass through the prop to set the game 
-   
+  let image = {uri:'https://lh3.googleusercontent.com/pw/ACtC-3ceUYAVwFWe-Cq5gel7gh-MlSudrZe_PUaj8UJuUCAjO21TuiHBleuzrJftApEUpMFPd1DCS1eAumyy5v1882LgmTJQmJN7wtcNbIbpJUSgXCj3tsqwOeV28q1GdFzpg9iaJXZTQmy_72muvs4guHTgHA=s843-no?authuser=0'}
+
+  if(props.rooms){
+    let rooms= props.rooms
+    let setRooms = props.setRooms
+    let player= rooms.player
+    let saveState = props.rooms.game[props.rooms.save]
+    let save = saveState.next
+    let InBackpack= rooms.save === "Backpack"
+    let allThree = rooms.checkPoint.lizard&&rooms.checkPoint.sandWorm&&rooms.checkPoint.hole
+    let image = {uri:'https://lh3.googleusercontent.com/pw/ACtC-3ceUYAVwFWe-Cq5gel7gh-MlSudrZe_PUaj8UJuUCAjO21TuiHBleuzrJftApEUpMFPd1DCS1eAumyy5v1882LgmTJQmJN7wtcNbIbpJUSgXCj3tsqwOeV28q1GdFzpg9iaJXZTQmy_72muvs4guHTgHA=s843-no?authuser=0'}
+   function showBackpack(){
+     
+      setRooms({
+          ...rooms,
+          game:{
+              ...rooms.game,
+              Backpack:{
+              dialog:'You open your backpack and you see:',
+              backpack:[...player.bag],
+              back:rooms.save,
+              next:rooms.save
+              }
+
+
+          },
+          save:'Backpack'
+      })
+  }
+
+
+  
+  if(InBackpack){
+
+    return(
+    
+    
+    
+    
+      <ImageBackground source={image} style={styles.header}>
+      <View onStartShouldSetResponder={
+          props.game 
+      } >
+        <Text style={styles.text} >Art Wall
+        </Text>
+       
+      </View>
+     
+      </ImageBackground>)
+  }
+    console.log(InBackpack) 
+ 
+
+
   return (
+
+    <ImageBackground source={image} style={styles.header}>
+      
+    
+    
     <View onStartShouldSetResponder={
         props.game 
-    } style={styles.header}>
+    } >
       <Text style={styles.text} >Art Wall
       </Text>
-      {/* <Image source={{uri:'https://lh3.googleusercontent.com/pw/ACtC-3c_J-6t4vfU0bXCS514LETfR7JqPo7ZVn3xwfP9riwAC5Kh3RfIcMukbzlG2XrUhgLZkCfv4EIiKitu9cwmwYwq1M7w_bGxpA2jTVXXpWgUgYeAYP155D3JzH8S0zkM1WwclzD9MPe0csvLhao8Pz9_ZA=w549-h823-no?authuser=0'}} style={styles.img} ></Image> */}
-      <StatusBar style="auto" />
+     
     </View>
+    <View onStartShouldSetResponder={
+        showBackpack
+    } >
+      <Text style={styles.text} >Backpack
+      </Text>
+     
+    </View>
+    
+    </ImageBackground>
   );
+
+
+
+
+  }
+
+  return(
+    <ImageBackground source={image} style={styles.header}>
+    <View onStartShouldSetResponder={
+        props.game 
+    } >
+      <Text style={styles.text} >Art Wall
+      </Text>
+     
+    </View>
+   
+  </ImageBackground>
+  )
+
+
+
+ 
+    // pass through the prop to set the game 
+   
+
 }
 
 const styles = StyleSheet.create({
@@ -33,17 +123,25 @@ const styles = StyleSheet.create({
     
   },
   header:{
-      height:60,
+      height:120,
       padding:15,
       backgroundColor:'blue',
       paddingTop:40,
+      flexDirection:'row',
+      justifyContent:'space-between',
+      
       
 
   },
   text:{
-      color:'#fff',
+      color:'black',
       fontSize:23,
-      textAlign:'center'
+      // textAlign:'center',
+      paddingTop:20
 
-  }
+  },
+  Backpack:{
+    
+  },
+  image:{}
 });
